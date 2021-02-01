@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6120790339477934980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4096987057511460013}
+  - component: {fileID: 1369188280938723363}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4096987057511460013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120790339477934980}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 395.05237, y: 362.84973, z: -429.375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1369188280938723363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120790339477934980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd0358dfe37b7fb43861d10c91bf1154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundAudioClipArray:
+  - sound: 0
+    audioClip: {fileID: 8300000, guid: c594abc079dc744478facdd16c81f79f, type: 3}
+    volume: 1
+    panEffect: 0.8
+  - sound: 1
+    audioClip: {fileID: 8300000, guid: a81b5bef596055a4e9fd0d0ca6ab24fb, type: 3}
+    volume: 1
+    panEffect: 1
+  - sound: 4
+    audioClip: {fileID: 8300000, guid: 21f1109600c602143a3dfe1e880e3b38, type: 3}
+    volume: 1
+    panEffect: 0
+  - sound: 2
+    audioClip: {fileID: 8300000, guid: 120f933969daf8d40b7a334665d899a0, type: 3}
+    volume: 0.95
+    panEffect: 0
+  - sound: 3
+    audioClip: {fileID: 8300000, guid: 79ea5de4b88dc0e438c6070187486c85, type: 3}
+    volume: 1
+    panEffect: 0
+  - sound: 6
+    audioClip: {fileID: 8300000, guid: 3df27f424ad83944aa31c4f9630e237c, type: 3}
+    volume: 1
+    panEffect: 0.85
+  - sound: 5
+    audioClip: {fileID: 8300000, guid: 92dd49c2654c97443950acef7a6b81ea, type: 3}
+    volume: 0.7
+    panEffect: 0
