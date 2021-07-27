@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public int goals = 0;
     int leftPlayerGoals = 0, rightPlayerGoals = 0;
     bool gameOver = false;
+    public bool GameOver => gameOver;
 
     private int _totalAmountOfSaves = 0;
 
@@ -66,8 +67,6 @@ public class GameManager : MonoBehaviour
     void BallWasSaved() //количество отбитий подсчет
     {
         _totalAmountOfSaves++;
-
-        print("мяч был отбит");
     }
 
 
@@ -88,12 +87,17 @@ public class GameManager : MonoBehaviour
 
         if (leftPlayerGoals >= maxGoals)
         {
-            Win(leftPlayerName);
+            Win(leftPlayerName, 1f);
         }
         else if (rightPlayerGoals >= maxGoals)
         {
-            Win(rightPlayerName);
+            Win(rightPlayerName, 1f);
         }
+    }
+
+    public void Win(string playerName, float showScreenDelay)
+    {
+        StartCoroutine(WinDelay(playerName, showScreenDelay));
     }
 
     public void Win(string playerName)
@@ -137,5 +141,16 @@ public class GameManager : MonoBehaviour
 
             winScreen.SetActive(!winScreen.activeSelf);
         }
+    }
+
+    IEnumerator WinDelay(string winner, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Win(winner);
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }

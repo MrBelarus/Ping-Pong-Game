@@ -122,6 +122,8 @@ public class PlatformBot : MonoBehaviour
                 platform.speed += 2f;
             }
 
+            FXPool.instance.SpawnHitFX(col.contacts[0].point, transform.rotation * Quaternion.Euler(new Vector3(0f, 180f)));
+
             print(platform.speed);
         }
     }
@@ -188,13 +190,13 @@ public class PlatformBot : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rayStartPos, ballVelocity, rayMaxDistance);
         rayStartPos = CalculateRayStartPoint(hit, rayStartPos, yVelocityCoef);
 
-        Debug.DrawLine(ball.transform.position, rayStartPos, Color.red, 20f);
+        //Debug.DrawLine(ball.transform.position, rayStartPos, Color.red, 20f);
 
         while (hit && ((1 << hit.collider.gameObject.layer) & layer) == 0)
         {
             yVelocityCoef *= -1;
             hit = Physics2D.Raycast(rayStartPos, new Vector2(ballVelocity.x, ballVelocity.y * yVelocityCoef));
-            Debug.DrawLine(rayStartPos, hit.point, Color.red, 20f);
+            //Debug.DrawLine(rayStartPos, hit.point, Color.red, 20f);
             rayStartPos = CalculateRayStartPoint(hit, rayStartPos, yVelocityCoef);
         }
 

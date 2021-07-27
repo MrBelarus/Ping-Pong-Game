@@ -37,6 +37,10 @@ public class BallMovement : MonoBehaviour
     [SerializeField]
     private SpriteRenderer ballSprite;
 
+    private Coroutine visibilityCoroutine;
+    private Coroutine spawnDelayCoroutine;
+    private Coroutine randomVelocityCoroutine;
+
     void Start()
     {
         initSpawnPos = transform.position;
@@ -45,7 +49,12 @@ public class BallMovement : MonoBehaviour
 
     public void SpawnBall(float delay)
     {
-        StartCoroutine(SpawnWithDelay(delay));
+        if (spawnDelayCoroutine != null)
+        {
+            StopCoroutine(spawnDelayCoroutine);
+        }
+
+        spawnDelayCoroutine = StartCoroutine(SpawnWithDelay(delay));
     }
 
     public void SpawnBall()
@@ -85,6 +94,8 @@ public class BallMovement : MonoBehaviour
 
         rb.velocity += velocity;
 
+        print("velocity changed");
+
         //velocity = new Vector2(-1, 0) * speed; //delete it after testing and uncomment lines above!
         //rb.velocity += velocity;
 
@@ -93,7 +104,12 @@ public class BallMovement : MonoBehaviour
 
     public void RandomVelocityWithDelay(float delay)
     {
-        StartCoroutine(RandomVelocityWithDelayCoroutine(delay));
+        if (randomVelocityCoroutine != null)
+        {
+            StopCoroutine(randomVelocityCoroutine);
+        }
+
+        randomVelocityCoroutine = StartCoroutine(RandomVelocityWithDelayCoroutine(delay));
     }
 
     IEnumerator RandomVelocityWithDelayCoroutine(float delay)
@@ -108,9 +124,6 @@ public class BallMovement : MonoBehaviour
         {
             if (Mathf.Pow(Mathf.Abs(rb.velocity.x * rb.velocity.x) + Mathf.Abs(rb.velocity.y * rb.velocity.y), 0.5f) > speed + speed / 10)
             {
-                print(speed);
-                print("reculculated speed!");
-
                 float vectorAttitude = Mathf.Pow(Mathf.Abs(rb.velocity.x * rb.velocity.x) + Mathf.Abs(rb.velocity.y * rb.velocity.y), 0.5f) / speed;
                 rb.velocity /= vectorAttitude / 1.7f;
 
@@ -132,14 +145,24 @@ public class BallMovement : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Wall"))
         {
-            print("Wall pan: " + transform.position.x / maxWallHitDistance);
             AudioManager.instance.PlaySound(AudioManager.Sounds.WallHit, transform.position.x / maxWallHitDistance, Random.Range(0.9f, 1.05f));
         }
     }
 
     private void DoVisibilityTransition(float alphaStart, float alphaEnd, float time, AnimationCurve curve = null)
     {
-        StartCoroutine(VisibilityTransition(alphaStart, alphaEnd, time, curve));
+        if (visibilityCoroutine != null)
+        {
+            StopCoroutine(visibilityCoroutine);
+
+            Color spriteCol = ballSprite.color;
+            spriteCol.a = 1f;
+            ballSprite.color = spriteCol;
+
+            print("COLOR FIX");
+        }
+
+        visibilityCoroutine = StartCoroutine(VisibilityTransition(alphaStart, alphaEnd, time, curve));
     }
 
     IEnumerator VisibilityTransition(float alphaStart, float alphaEnd, float time, AnimationCurve curve = null)
@@ -167,11 +190,13 @@ public class BallMovement : MonoBehaviour
         }
 
         ballSprite.color = end;
+        visibilityCoroutine = null;
     }
 
     IEnumerator SpawnWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         SpawnBall();
+        spawnDelayCoroutine = null;
     }
 }

@@ -18,6 +18,9 @@ public class PlatformController : MonoBehaviour
     PlatformMovement platform;
     private float pan = 0f;
 
+    [SerializeField]
+    private ParticleSystem ballHitFX;
+
     void Awake()
     {
         platform = gameObject.GetComponent<PlatformMovement>();
@@ -120,6 +123,8 @@ public class PlatformController : MonoBehaviour
             {
                 platform.speed += 2f;
             }
+
+            FXPool.instance.SpawnHitFX(col.contacts[0].point, transform.rotation);
         }
     }
 }
