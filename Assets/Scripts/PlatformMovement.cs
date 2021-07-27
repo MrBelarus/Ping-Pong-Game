@@ -13,13 +13,18 @@ public class PlatformMovement : MonoBehaviour
     public float rotationSpeed = 5f;
     public float angleLimit = 45f;
 
-    private float backSpeed = 0.1f;   //если угол > angleLimit, то возвращаем обратно
-
     public float borderPosition = 8f;
     private float radAngleLimit = 0f;
 
     private Vector2 maxPositiveYPos;
     private Vector2 minPositiveYPos;
+
+    private Vector2 futurePos;
+
+    private void Awake()
+    {
+        GameEvents.current.onBallSpawn += ResetPlatform;
+    }
 
     void Start()
     {
@@ -35,69 +40,43 @@ public class PlatformMovement : MonoBehaviour
     {
         if (verticalMove != 0)
         {
-            if (Mathf.Abs(transform.position.y) < borderPosition)
+            futurePos = transform.position + new Vector3(0, speed * verticalMove * Time.deltaTime);
+
+            if (Mathf.Abs(futurePos.y) > borderPosition)
             {
-                rb.MovePosition(transform.position + new Vector3(0, speed * verticalMove * Time.deltaTime));
-            }
-            else
-            {
-                if (transform.position.y > 0)
+                if (futurePos.y > 0)
                 {
-                    if (verticalMove > 0f)
-                    {
-                        rb.MovePosition(maxPositiveYPos);
-                    }
-                    else
-                    {
-                        rb.MovePosition(transform.position + new Vector3(0, speed * verticalMove * Time.deltaTime));
-                    }
+                    futurePos = maxPositiveYPos;
                 }
-                else if (transform.position.y < 0)
+                else
                 {
-                    if (verticalMove < 0f)
-                    {
-                        rb.MovePosition(minPositiveYPos);
-                    }
-                    else
-                    {
-                        rb.MovePosition(transform.position + new Vector3(0, speed * verticalMove * Time.deltaTime));
-                    }
+                    futurePos = minPositiveYPos;
                 }
             }
+
+            rb.MovePosition(futurePos);
         }
 
         if (rotation != 0)  //rotation = 1 значит что поворачиваем против часов. стрелки
         {
-            if (Mathf.Abs(transform.rotation.z) < radAngleLimit)
-            {
-                transform.eulerAngles += new Vector3(0, 0, rotation * rotationSpeed);
-            }
-            else
+            transform.Rotate(Vector3.forward, rotation * rotationSpeed);
+
+            if (Mathf.Abs(transform.rotation.z) > radAngleLimit)
             {
                 if (transform.rotation.z < 0f)
                 {
-                    if (rotation < 0f)
-                    {
-                        transform.eulerAngles += new Vector3(0, 0, 0.01f);
-                    }
-                    else
-                    {
-                        transform.eulerAngles += new Vector3(0, 0, rotation * rotationSpeed);
-                    }
+                    transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y, -radAngleLimit, transform.rotation.w);
                 }
                 else
                 {
-                    if (rotation > 0f)
-                    {
-                        transform.eulerAngles += new Vector3(0, 0, 0.01f);
-                    }
-                    else
-                    {
-                        transform.eulerAngles += new Vector3(0, 0, rotation * rotationSpeed);
-                    }
-
+                    transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y, radAngleLimit, transform.rotation.w);
                 }
             }
         }
+    }
+
+    public void ResetPlatform(GameObject ball)
+    {
+        speed = defaultSpeed;
     }
 }

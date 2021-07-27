@@ -270,7 +270,7 @@ public class PlatformBot : MonoBehaviour
 
     IEnumerator StartMotion(float delay)
     {
-        yield return new WaitForSeconds(reactTime);
+        yield return new WaitForSeconds(delay);
 
         if (platformPointToSave.y > transform.position.y)
         {
