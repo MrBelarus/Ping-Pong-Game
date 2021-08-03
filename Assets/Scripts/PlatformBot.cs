@@ -122,7 +122,7 @@ public class PlatformBot : MonoBehaviour
                 platform.speed += 2f;
             }
 
-            FXPool.instance.SpawnHitFX(col.contacts[0].point, transform.rotation * Quaternion.Euler(new Vector3(0f, 180f)));
+            FXPool.instance.SpawnHitFX(col.contacts[0]);
 
             print(platform.speed);
         }

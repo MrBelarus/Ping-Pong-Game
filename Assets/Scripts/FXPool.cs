@@ -38,14 +38,15 @@ public class FXPool : MonoBehaviour
         }
     }
 
-    public void SpawnHitFX(Vector2 pos, Quaternion rot)
+    public void SpawnHitFX(ContactPoint2D contactInfo)
     {
         if (hitQueue.Count > 0)
         {
             ParticleSystem particle = hitQueue.Dequeue();
             particle.transform.parent = null;
-            particle.transform.position = pos;
-            particle.transform.rotation = rot;
+            particle.transform.position = contactInfo.point;
+            particle.transform.rotation = Quaternion.FromToRotation(Vector2.up, -contactInfo.normal);
+            Debug.DrawLine(contactInfo.point, contactInfo.point + -contactInfo.normal * 10f, Color.green, 10f);
             particle.Play();
             StartCoroutine(ReturnObjToPool(particle, hitQueue));
         }

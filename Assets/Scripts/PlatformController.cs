@@ -124,7 +124,7 @@ public class PlatformController : MonoBehaviour
                 platform.speed += 2f;
             }
 
-            FXPool.instance.SpawnHitFX(col.contacts[0].point, transform.rotation);
+            FXPool.instance.SpawnHitFX(col.contacts[0]);
         }
     }
 }
